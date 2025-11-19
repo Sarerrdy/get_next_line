@@ -6,7 +6,7 @@
 /*   By: eina <eina@student.42vienna.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/14 00:57:39 by eina              #+#    #+#             */
-/*   Updated: 2025/11/14 10:43:08 by eina             ###   ########.fr       */
+/*   Updated: 2025/11/19 06:55:26 by eina             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,25 +16,22 @@
 # define BUFFER_SIZE 10
 #endif
 
-
 static char	*get_line(char **databasin)
 {
 	char	*newline;
 	char	*line;
 	char	*leftover;
 	size_t	len;
-	size_t	i;
 
 	newline = ft_strchr(*databasin, '\n');
 	if (!*databasin || **databasin == '\0')
 		return (NULL);
 	if (newline)
 	{
-		len = newline - *databasin;
+		len = newline - *databasin + 1;
 		line = malloc(len + 1);
 		if (!line)
 			return (NULL);
-		i = 0;
 		ft_memcpy(line, *databasin, len);
 		line[len] = '\0';
 		leftover = ft_strjoin(NULL, newline + 1);
@@ -42,19 +39,23 @@ static char	*get_line(char **databasin)
 		*databasin = leftover;
 		return (line);
 	}
+	line = *databasin;
+	*databasin = NULL;
+	return (line);
 }
 
 char	*get_next_line(int fd)
 {
 	size_t		read_bytes;
-	char		buffer[BUFFER_SIZE + 1];
+	char		*buffer;
 	static char	*databasin;
 
-	if (fd < 0 && buffer <= 0)
+	if (fd < 0 || BUFFER_SIZE <= 0)
 		return (NULL);
-	read_bytes = read(fd, buffer, BUFFER_SIZE);
+	buffer = ft_calloc(BUFFER_SIZE + 1, sizeof(char));
 	while (!ft_strchr(databasin, '\n'))
 	{
+		read_bytes = read(fd, buffer, BUFFER_SIZE);
 		if (read_bytes <= 0)
 			break ;
 		buffer[read_bytes] = '\0';

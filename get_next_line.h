@@ -6,12 +6,12 @@
 /*   By: eina <eina@student.42vienna.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/14 00:57:49 by eina              #+#    #+#             */
-/*   Updated: 2025/11/14 10:43:38 by eina             ###   ########.fr       */
+/*   Updated: 2025/11/19 06:55:08 by eina             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef GET_NEXT_LINE_H
-# define GET_NEXT_LINE_h
+# define GET_NEXT_LINE_H
 
 # include <stddef.h>
 # include <stdlib.h>
