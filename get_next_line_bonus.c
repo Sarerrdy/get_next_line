@@ -6,15 +6,26 @@
 /*   By: eina <eina@student.42vienna.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/14 00:57:39 by eina              #+#    #+#             */
-/*   Updated: 2025/11/21 10:15:57 by eina             ###   ########.fr       */
+/*   Updated: 2025/11/21 17:41:22 by eina             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line_bonus.h"
 
+#ifndef OPEN_MAX
+# define OPEN_MAX 1024
+#endif
+
 #ifndef BUFFER_SIZE
 # define BUFFER_SIZE 10
 #endif
+
+static char	*ft_freemultiple(char *s1, char *s2)
+{
+	free(s1);
+	free(s2);
+	return (NULL);
+}
 
 static char	*get_line(char **databasin)
 {
@@ -23,13 +34,13 @@ static char	*get_line(char **databasin)
 	char	*leftover;
 	size_t	len;
 
-	newline = ft_strchr(*databasin, '\n');
-	if (!*databasin || **databasin == '\0')
+	if (!databasin || !*databasin || **databasin == '\0')
 		return (NULL);
+	newline = ft_strchr(*databasin, '\n');
 	if (newline)
 	{
-		len = newline - *databasin + 1;
-		line = malloc(len + 1);
+		len = (size_t)(newline - *databasin) + 1;
+		line = (char *)malloc(len + 1);
 		if (!line)
 			return (NULL);
 		ft_memcpy(line, *databasin, len);
@@ -46,20 +57,28 @@ static char	*get_line(char **databasin)
 
 char	*get_next_line(int fd)
 {
-	size_t		read_bytes;
+	ssize_t		read_bytes;
 	char		*buffer;
+	char		*joined;
 	static char	*databasin[OPEN_MAX];
 
-	if (fd < 0 || BUFFER_SIZE <= 0)
+	if (fd < 0 || fd >= OPEN_MAX || BUFFER_SIZE <= 0)
 		return (NULL);
 	buffer = ft_calloc(BUFFER_SIZE + 1, sizeof(char));
-	while (!ft_strchr(databasin[fd], '\n'))
+	while (!(databasin[fd] && ft_strchr(databasin[fd], '\n')))
 	{
 		read_bytes = read(fd, buffer, BUFFER_SIZE);
-		if (read_bytes <= 0)
+		if (read_bytes < 0)
+			return (ft_freemultiple(buffer, databasin[fd]));
+		if (read_bytes == 0)
 			break ;
 		buffer[read_bytes] = '\0';
-		databasin[fd] = ft_strjoin(databasin[fd], buffer);
+		joined = ft_strjoin(databasin[fd], buffer);
+		if (!joined)
+			return (ft_freemultiple(buffer, databasin[fd]));
+		free(databasin[fd]);
+		databasin[fd] = joined;
 	}
+	free(buffer);
 	return (get_line(&databasin[fd]));
 }

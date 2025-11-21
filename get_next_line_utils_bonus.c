@@ -6,7 +6,7 @@
 /*   By: eina <eina@student.42vienna.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/14 00:58:11 by eina              #+#    #+#             */
-/*   Updated: 2025/11/21 09:59:34 by eina             ###   ########.fr       */
+/*   Updated: 2025/11/21 17:43:30 by eina             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,12 +22,12 @@ void	*ft_calloc(size_t nmemb, size_t size)
 	size_t			i;
 	size_t			total;
 
-	total = nmemb * size;
 	if (nmemb == 0 || size == 0)
 		return (malloc(0));
 	if (nmemb > SIZE_MAX / size)
 		return (NULL);
-	ptr = malloc(nmemb * size);
+	total = nmemb * size;
+	ptr = malloc(total);
 	if (!ptr)
 		return (NULL);
 	i = 0;
@@ -37,41 +37,34 @@ void	*ft_calloc(size_t nmemb, size_t size)
 		i++;
 		total--;
 	}
-	return (ptr);
+	return ((void *)ptr);
 }
 
 static size_t	checktotalstrlen(char const *s1, char const *s2)
 {
 	size_t	s1_len;
 	size_t	s2_len;
-	int		count;
 
+	s1_len = 0;
+	s2_len = 0;
 	if (s1)
 	{
-		count = 0;
-		while (s1[count])
-			count++;
-		s1_len = count;
+		while (s1[s1_len])
+			s1_len++;
 	}
-	else
-		s1_len = 0;
 	if (s2)
 	{
-		count = 0;
-		while (s2[count])
-			count++;
-		s2_len = count;
+		while (s2[s2_len])
+			s2_len++;
 	}
-	else
-		s2_len = 0;
 	return (s1_len + s2_len);
 }
 
 char	*ft_strjoin(char const *s1, char const *s2)
 {
 	char	*newstr;
-	int		i;
-	int		j;
+	size_t	i;
+	size_t	j;
 
 	if (!s1 && !s2)
 		return (NULL);
@@ -118,6 +111,8 @@ void	*ft_memcpy(void *dest, const void *src, size_t n)
 	unsigned char		*dptr;
 	const unsigned char	*sptr;
 
+	if (n == 0)
+		return (dest);
 	if (!dest || !src)
 		return (NULL);
 	dptr = (unsigned char *)dest;

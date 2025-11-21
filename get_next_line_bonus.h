@@ -6,7 +6,7 @@
 /*   By: eina <eina@student.42vienna.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/21 11:54:27 by eina              #+#    #+#             */
-/*   Updated: 2025/11/21 11:56:45 by eina             ###   ########.fr       */
+/*   Updated: 2025/11/21 17:42:45 by eina             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,10 +17,6 @@
 # include <stddef.h>
 # include <stdlib.h>
 # include <unistd.h>
-
-# ifndef OPEN_MAX
-#  define OPEN_MAX 1024
-# endif
 
 char	*get_next_line(int fd);
 void	*ft_calloc(size_t nmemb, size_t size);

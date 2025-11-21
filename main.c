@@ -1,11 +1,11 @@
-/* #include <fcntl.h>
+#include <fcntl.h>
 #include <stdio.h>
 #include "get_next_line.h"
 
 int main(void)
 {
-    // int fd = open("test.txt", O_RDONLY);
-    int fd = 0;
+    int fd = open("test.txt", O_RDONLY);
+    // int fd = 0;
     char *line;
     int i;
 
@@ -17,9 +17,9 @@ int main(void)
     }
     close(fd);
     return 0;
-} */
+}
 
-
+/* 
 #include <fcntl.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -30,7 +30,7 @@ int main(void)
 {
     int fd1 = open("test1.txt", O_RDONLY);
     int fd2 = open("test2.txt", O_RDONLY);
-    int fd3 = 0;//open("test3.txt", O_RDONLY);
+    int fd3 = open("test3.txt", O_RDONLY);
 
     if (fd1 < 0 || fd2 < 0 || fd3 < 0)
     {
@@ -46,21 +46,21 @@ int main(void)
         if (line)
         {
             printf("FD1 LINE %d: %s", i++, line);
-            free(line);
+            // free(line);
         }
 
-        line = get_next_line(-1);
+        line = get_next_line(fd2);
         if (line)
         {
             printf("FD2 LINE %d: %s", i++, line);
-            free(line);
+            // free(line);
         }
 
         line = get_next_line(fd3);
         if (line)
         {
             printf("FD3 LINE %d: %s", i++, line);
-            free(line);
+            // free(line);
         }
         if (!line && !get_next_line(fd1) && !get_next_line(fd2) && !get_next_line(fd3))
             break;
@@ -71,3 +71,4 @@ int main(void)
     close(fd3);
     return 0;
 }
+ */
