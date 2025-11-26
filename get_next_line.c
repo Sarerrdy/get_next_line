@@ -6,7 +6,7 @@
 /*   By: eina <eina@student.42vienna.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/14 00:57:39 by eina              #+#    #+#             */
-/*   Updated: 2025/11/24 11:47:40 by eina             ###   ########.fr       */
+/*   Updated: 2025/11/26 11:36:53 by eina             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,10 +16,19 @@
 # define BUFFER_SIZE 10
 #endif
 
-static char	*ft_freemultiple(char *s1, char *s2)
+static char	*ft_freeupdate(char **old, char *new, char *extra)
 {
-	free(s1);
-	free(s2);
+	if (old && *old)
+		free(*old);
+	if (extra)
+		free(extra);
+	if (new && *new == '\0')
+	{
+		free(new);
+		new = NULL;
+	}
+	if (old)
+		*old = new;
 	return (NULL);
 }
 
@@ -42,8 +51,7 @@ static char	*get_line(char **databasin)
 		ft_memcpy(line, *databasin, len);
 		line[len] = '\0';
 		leftover = ft_strjoin(NULL, newline + 1);
-		free(*databasin);
-		*databasin = leftover;
+		ft_freeupdate(databasin, leftover, NULL);
 		return (line);
 	}
 	line = *databasin;
@@ -65,14 +73,14 @@ char	*get_next_line(int fd)
 	{
 		read_bytes = read(fd, buffer, BUFFER_SIZE);
 		if (read_bytes < 0)
-			return (ft_freemultiple(buffer, databasin));
+			return (ft_freeupdate(&databasin, NULL, buffer));
 		if (read_bytes == 0)
 			break ;
 		buffer[read_bytes] = '\0';
 		joined = ft_strjoin(databasin, buffer);
 		if (!joined)
-			return (ft_freemultiple(buffer, databasin));
-		free(databasin);
+			return (ft_freeupdate(&databasin, NULL, buffer));
+		ft_freeupdate(&databasin, joined, NULL);
 		databasin = joined;
 	}
 	free(buffer);

@@ -6,7 +6,7 @@
 /*   By: eina <eina@student.42vienna.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/14 00:58:11 by eina              #+#    #+#             */
-/*   Updated: 2025/11/21 17:43:30 by eina             ###   ########.fr       */
+/*   Updated: 2025/11/25 08:48:57 by eina             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ void	*ft_calloc(size_t nmemb, size_t size)
 	size_t			total;
 
 	if (nmemb == 0 || size == 0)
-		return (malloc(0));
+		return (NULL);
 	if (nmemb > SIZE_MAX / size)
 		return (NULL);
 	total = nmemb * size;
